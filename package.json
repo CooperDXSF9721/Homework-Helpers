@@ -2,7 +2,7 @@
   "name": "homework-helpers",
   "version": "1.0.0",
   "description": "Homework help platform for students",
-  "homepage": "https://YOUR_GITHUB_USERNAME.github.io/Homework-Helpers",
+  "homepage": "https://cooperdxsf9721.github.io/Homework-Helpers",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
