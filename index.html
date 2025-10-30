@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homework Helpers</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Secret Admin Button -->
+    <button id="secretAdminBtn" class="secret-btn" title="Admin Access"></button>
+
+    <!-- Auth Container (Sign In / Sign Up) -->
+    <div id="authContainer" class="auth-container">
+        <div class="auth-box">
+            <h1>📚 Homework Helpers</h1>
+            <p class="subtitle" id="authSubtitle">Sign in to your account</p>
+
+            <div id="authError" class="error-message" style="display: none;"></div>
+
+            <div id="authForm">
+                <!-- Name field (only for signup) -->
+                <div id="nameField" style="display: none;">
+                    <label>Full Name</label>
+                    <input type="text" id="authName" placeholder="John Doe">
+                </div>
+
+                <!-- Email field -->
+                <div>
+                    <label>Email</label>
+                    <input type="email" id="authEmail" placeholder="your.email@example.com">
+                </div>
+
+                <!-- Password field (hidden for reset) -->
+                <div id="passwordField">
+                    <label>Password</label>
+                    <div class="password-input">
+                        <input type="password" id="authPassword" placeholder="••••••••">
+                        <button type="button" id="togglePassword" class="toggle-password">👁️</button>
+                    </div>
+                    <p class="help-text" id="passwordHelp" style="display: none;">At least 6 characters</p>
+                </div>
+
+                <!-- Forgot Password Link -->
+                <div id="forgotPasswordLink">
+                    <a href="#" id="forgotPasswordBtn">Forgot password?</a>
+                </div>
+
+                <!-- Submit Button -->
+                <button id="authSubmitBtn" class="btn-primary">Sign In</button>
+
+                <!-- Switch Mode Link -->
+                <div class="switch-mode">
+                    <p id="switchModeText">
+                        Don't have an account? <a href="#" id="switchModeLink">Sign up</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App Container (Hidden until logged in) -->
+    <div id="appContainer" style="display: none;">
+        <!-- Header -->
+        <header>
+            <div class="header-content">
+                <h1>📚 Homework Helpers</h1>
+                <div class="header-right">
+                    <span id="userDisplay"></span>
+                    <button id="signOutBtn" class="btn-secondary">Sign Out</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav>
+            <button class="nav-btn active" data-view="posts">Study Materials</button>
+            <button class="nav-btn" data-view="chats">My Chats</button>
+            <button class="nav-btn" data-view="profile" id="adminProfileBtn" style="display: none;">Admin Profile</button>
+        </nav>
+
+        <!-- Main Content -->
+        <main id="mainContent">
+            <!-- Posts View -->
+            <div id="postsView" class="view active">
+                <div class="view-header">
+                    <h2>Study Materials</h2>
+                    <div class="view-actions">
+                        <button id="createPostBtn" class="btn-primary" style="display: none;">➕ Create Post</button>
+                        <button id="requestChatBtn" class="btn-success">💬 Request Help</button>
+                    </div>
+                </div>
+                <div id="postsList" class="posts-grid"></div>
+            </div>
+
+            <!-- Chats View -->
+            <div id="chatsView" class="view">
+                <div class="view-header">
+                    <h2 id="chatsTitle">My Chats</h2>
+                </div>
+                <div id="chatsList" class="posts-grid"></div>
+            </div>
+
+            <!-- Admin Profile View -->
+            <div id="profileView" class="view">
+                <div class="view-header">
+                    <h2>Admin Profile</h2>
+                </div>
+                <div class="profile-content">
+                    <div class="profile-section">
+                        <h3>Your Information</h3>
+                        <p id="adminInfo"></p>
+                    </div>
+                    <div class="profile-section">
+                        <h3>Availability Status</h3>
+                        <div class="status-buttons">
+                            <button id="statusOpenBtn" class="status-btn active">✓ Open - Available</button>
+                            <button id="statusAwayBtn" class="status-btn">✗ Away - Unavailable</button>
+                        </div>
+                        <p class="help-text">When you're "Away", students won't be able to request new chats with you.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Window View -->
+            <div id="chatWindowView" class="view">
+                <div class="chat-window">
+                    <div class="chat-header">
+                        <div>
+                            <h3 id="chatTitle"></h3>
+                            <p class="chat-subtitle">Active Chat</p>
+                        </div>
+                        <div class="chat-actions">
+                            <button id="closeChatBtn" class="btn-danger">Close Chat</button>
+                            <button id="backToChatsList" class="btn-secondary">Back</button>
+                        </div>
+                    </div>
+                    <div id="chatMessages" class="chat-messages"></div>
+                    <div class="chat-input">
+                        <input type="text" id="messageInput" placeholder="Type your message...">
+                        <button id="sendMessageBtn" class="btn-primary">Send</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Admin Login Modal -->
+    <div id="adminModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>🔐 Admin Access</h3>
+                <button class="close-modal" id="closeAdminModal">×</button>
+            </div>
+            <div class="modal-body">
+                <label>Admin Name</label>
+                <input type="text" id="adminName" placeholder="Your name">
+                
+                <label>Admin Email</label>
+                <input type="email" id="adminEmail" placeholder="your.email@example.com">
+                
+                <label>Admin Password</label>
+                <input type="password" id="adminPassword" placeholder="Password">
+                
+                <button id="adminLoginBtn" class="btn-primary">Login as Admin</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Post Modal -->
+    <div id="createPostModal" class="modal" style="display: none;">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3>📝 Create New Post</h3>
+                <button class="close-modal" id="closeCreatePostModal">×</button>
+            </div>
+            <div class="modal-body">
+                <label>Title *</label>
+                <input type="text" id="postTitle" placeholder="e.g., Calculus Study Guide - Chapter 5">
+                
+                <label>Price ($) *</label>
+                <input type="number" id="postPrice" step="0.01" placeholder="e.g., 15.00">
+                
+                <label>Content</label>
+                <textarea id="postContent" placeholder="Study material content (only visible after unlock)..." rows="5"></textarea>
+                <p class="help-text">This content will be hidden until the student unlocks the post</p>
+                
+                <label>Image URL (Optional)</label>
+                <input type="text" id="postImageUrl" placeholder="Paste image URL from Google Drive, ImgBB, etc.">
+                <p class="help-text">Upload image to Google Drive, get shareable link, and paste here</p>
+                <div id="imagePreview" style="display: none;">
+                    <img id="previewImg" src="" alt="Preview" style="max-width: 200px; border-radius: 8px; margin-top: 10px;">
+                </div>
+                
+                <label>File Links (PDFs, Videos, etc.)</label>
+                <button type="button" id="addFileLinkBtn" class="btn-secondary">+ Add File Link</button>
+                <div id="fileLinksContainer"></div>
+                
+                <button id="submitPostBtn" class="btn-primary">Create Post</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Request Chat Modal -->
+    <div id="requestChatModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>💬 Request Chat</h3>
+                <button class="close-modal" id="closeRequestChatModal">×</button>
+            </div>
+            <div class="modal-body">
+                <p>Select an admin to chat with:</p>
+                <div id="adminsList"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Unlock Post Modal -->
+    <div id="unlockPostModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>🔓 Unlock Post</h3>
+                <button class="close-modal" id="closeUnlockModal">×</button>
+            </div>
+            <div class="modal-body">
+                <p>Search for a student to unlock this post:</p>
+                <div class="search-box">
+                    <input type="text" id="studentSearch" placeholder="Student name...">
+                    <button id="searchStudentBtn" class="btn-primary">Search</button>
+                </div>
+                <div id="searchResults"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" class="loading-spinner" style="display: none;">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script type="module" src="app.js"></script>
+</body>
+</html>
