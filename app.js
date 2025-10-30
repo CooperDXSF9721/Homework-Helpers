@@ -397,7 +397,7 @@ function switchView(view) {
 async function handleAdminLogin() {
     const name = document.getElementById('adminName').value.trim();
     const email = document.getElementById('adminEmail').value.trim();
-    const password = ('thehwguys')
+    const password = document.getElementById('adminPassword').value;
 
     if (!name || !email || !password) {
         alert('Please fill in all fields');
